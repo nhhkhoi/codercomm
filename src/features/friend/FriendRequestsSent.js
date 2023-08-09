@@ -9,11 +9,11 @@ import {
   Container,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getFriendRequests } from "./friendSlice";
+import { getFriendRequestsSent } from "./friendSlice";
 import UserCard from "./UserCard";
 import SearchInput from "../../components/SearchInput";
 
-function FriendRequests() {
+function FriendRequestsSent() {
   const [filterName, setFilterName] = useState("");
   const [page, setPage] = React.useState(1);
 
@@ -28,7 +28,7 @@ function FriendRequests() {
   };
 
   useEffect(() => {
-    dispatch(getFriendRequests({ filterName, page }));
+    dispatch(getFriendRequestsSent({ filterName, page }));
   }, [filterName, page, dispatch]);
 
   return (
@@ -74,4 +74,4 @@ function FriendRequests() {
   );
 }
 
-export default FriendRequests;
+export default FriendRequestsSent;

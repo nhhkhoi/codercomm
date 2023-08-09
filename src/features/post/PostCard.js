@@ -12,12 +12,17 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { fDate } from "../../utils/formatTime";
 
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PostReaction from "./PostReaction";
 import CommentForm from "../comment/CommentForm";
 import CommentList from "../comment/CommentList";
+import VertIcon from "./VerticalActions";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import useAuth from "../../hooks/useAuth";
 
 function PostCard({ post }) {
+  const state = useAuth();
+  const userID = state.user._id;
+
   return (
     <Card>
       <CardHeader
@@ -31,7 +36,7 @@ function PostCard({ post }) {
             color="text.primary"
             component={RouterLink}
             sx={{ fontWeight: 600 }}
-            to={`/user/${post.author._id}`}
+            to={`/user/${post?.author?._id}`}
           >
             {post?.author?.name}
           </Link>
@@ -45,9 +50,18 @@ function PostCard({ post }) {
           </Typography>
         }
         action={
-          <IconButton>
-            <MoreVertIcon sx={{ fontSize: 30 }} />
-          </IconButton>
+          userID === post.author._id ? (
+            <VertIcon postId={post._id} />
+          ) : (
+            ""
+            // <IconButton>
+            //   <MoreVertIcon
+            //     sx={{
+            //       fontSize: 30,
+            //     }}
+            //   />
+            // </IconButton>
+          )
         }
       />
 

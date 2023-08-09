@@ -44,6 +44,10 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
+    deleteCommentSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+    },
 
     sendCommentReactionSuccess(state, action) {
       state.isLoading = false;
@@ -114,6 +118,22 @@ export const sendCommentReaction =
           reactions: response.data,
         })
       );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const deleteComment =
+  ({ commentId, postId }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(`/comments/${commentId}`, {
+        commentId,
+      });
+      dispatch(slice.actions.deleteCommentSuccess(response.data));
+      dispatch(getComments(postId));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
