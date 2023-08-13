@@ -13,14 +13,16 @@ const yupSchema = Yup.object().shape({
   content: Yup.string().required("Content is required"),
 });
 
-const defaultValues = {
-  content: "",
-  image: "",
-};
-
 function EditFormModal({ postId, handleCloseDialog2 }) {
   const { isLoading, postsById } = useSelector((state) => state.post);
+
   let editContent = postsById[postId].content;
+  let editImage = postsById[postId].image;
+
+  const defaultValues = {
+    content: editContent,
+    image: editImage,
+  };
 
   const methods = useForm({
     resolver: yupResolver(yupSchema),
@@ -67,7 +69,6 @@ function EditFormModal({ postId, handleCloseDialog2 }) {
             multiline
             fullWidth
             rows={4}
-            placeholder={editContent}
             sx={{
               "& fieldset": {
                 borderWidth: `1px !important`,
