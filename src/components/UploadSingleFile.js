@@ -30,7 +30,7 @@ function UploadSingleFile({ error = false, file, helperText, sx, ...other }) {
     multiple: false,
     ...other,
   });
-  console.log("file", file);
+
   return (
     <Box sx={{ width: "100%", ...sx }}>
       <DropZoneStyle

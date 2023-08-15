@@ -17,34 +17,35 @@ import EditFormModal from "./EditFormModal";
 export default function VertIcon({ postId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const [openDialog1, setOpenDialog1] = React.useState(false);
-  const [openDialog2, setOpenDialog2] = React.useState(false);
-  const handleClickOpenDialog1 = () => {
-    setOpenDialog1(true);
-  };
-  const handleCloseDialog1 = () => {
-    setOpenDialog1(false);
+  const [openDialogDeleteMenu, setOpenDialogDeleteMenu] = React.useState(false);
+  const [openDialogEditMenu, setOpenDialogEditMenu] = React.useState(false);
+  const handleClickOpenDialogDeleteMenu = () => {
+    setOpenDialogDeleteMenu(true);
     handleClose();
   };
-  const handleClickOpenDialog2 = () => {
-    setOpenDialog2(true);
+  const handleCloseDialogDeleteMenu = () => {
+    setOpenDialogDeleteMenu(false);
   };
-  const handleCloseDialog2 = () => {
-    setOpenDialog2(false);
+  const handleClickOpenDialogEditMenu = () => {
+    setOpenDialogEditMenu(true);
+
     handleClose();
+  };
+  const handleCloseDialogEditMenu = () => {
+    setOpenDialogEditMenu(false);
   };
 
   const dispatch = useDispatch();
   const handleDeletePost = ({ postId }) => {
     dispatch(deletePost({ postId }));
-    handleCloseDialog1();
+    handleCloseDialogDeleteMenu();
   };
 
   return (
@@ -54,7 +55,7 @@ export default function VertIcon({ postId }) {
         aria-controls={open ? "vert-icon" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
+        onClick={handleOpen}
       >
         <MoreVertIcon sx={{ fontSize: 30 }} />
       </IconButton>
@@ -63,20 +64,23 @@ export default function VertIcon({ postId }) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        placement="bottom-start"
+        keepMounted
         MenuListProps={{
           "aria-labelledby": "vert-icon",
         }}
       >
         <MenuItem>
-          <div onClick={handleClickOpenDialog1}>Delete</div>
+          <div onClick={handleClickOpenDialogDeleteMenu}>Delete</div>
           <Dialog
-            open={openDialog1}
-            onClose={handleCloseDialog1}
+            open={openDialogDeleteMenu}
+            onClose={handleCloseDialogDeleteMenu}
+            onBlur={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"Delete Post Confirmation"}
+              "Delete Post Confirmation"
             </DialogTitle>
 
             <DialogContent>
@@ -85,7 +89,7 @@ export default function VertIcon({ postId }) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseDialog1}>No way</Button>
+              <Button onClick={handleCloseDialogDeleteMenu}>No way</Button>
               <Button onClick={() => handleDeletePost({ postId })} autoFocus>
                 Heck Yeah
               </Button>
@@ -93,17 +97,18 @@ export default function VertIcon({ postId }) {
           </Dialog>
         </MenuItem>
         <MenuItem>
-          <div onClick={handleClickOpenDialog2}>Edit</div>
+          <div onClick={handleClickOpenDialogEditMenu}>Edit</div>
           <Dialog
-            open={openDialog2}
-            onClose={handleCloseDialog2}
+            open={openDialogEditMenu}
+            onClose={handleCloseDialogEditMenu}
+            onBlur={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Edit Post"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">"Edit Post"</DialogTitle>
             <EditFormModal
               postId={postId}
-              handleCloseDialog2={handleCloseDialog2}
+              handleCloseDialogEditMenu={handleCloseDialogEditMenu}
             />
           </Dialog>
         </MenuItem>

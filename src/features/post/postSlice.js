@@ -167,9 +167,11 @@ export const editPost =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
+      const imageUrl = await cloudinaryUpload(image);
+
       const response = await apiService.put(`/posts/${postId}`, {
         content,
-        image,
+        image: imageUrl,
       });
       const data = await response.data;
 

@@ -13,7 +13,7 @@ const yupSchema = Yup.object().shape({
   content: Yup.string().required("Content is required"),
 });
 
-function EditFormModal({ postId, handleCloseDialog2 }) {
+function EditFormModal({ postId, handleCloseDialogEditMenu }) {
   const { isLoading, postsById } = useSelector((state) => state.post);
 
   let editContent = postsById[postId].content;
@@ -57,7 +57,7 @@ function EditFormModal({ postId, handleCloseDialog2 }) {
     const { content, image } = data;
 
     dispatch(editPost({ content, image, postId })).then(() => reset());
-    handleCloseDialog2();
+    handleCloseDialogEditMenu();
   };
 
   return (
